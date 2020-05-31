@@ -23,7 +23,7 @@ function roundPrice(price) {
   return Math.round(price * 100) / 100;
 }
 
-app.get("/hello", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) => res.send("Hello World!"));
 
 app.post("/addItem", (req, res) => {
   var name = req.body.name;
