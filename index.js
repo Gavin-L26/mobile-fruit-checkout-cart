@@ -1,7 +1,7 @@
 const express = require("express");
 var cors = require("cors");
 const app = express();
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 const data = require("./itemPrice.json");
 const tax = 1.13;
 var bodyParser = require("body-parser");
@@ -79,9 +79,7 @@ app.get("/reset", (req, res) => {
   res.end();
 });
 
-app.listen(port, () =>
-  console.log(`Example app listening at http://localhost:${port}`)
-);
+app.listen(port, () => console.log(`Example app listening at ${port}`));
 
 module.exports = {
   roundPrice: roundPrice,
