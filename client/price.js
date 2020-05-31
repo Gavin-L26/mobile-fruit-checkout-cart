@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 
-const url = "http://192.168.2.34:5000";
+const url = "https://radiant-spire-66706.herokuapp.com";
 
 export default class Price extends Component {
   constructor() {
