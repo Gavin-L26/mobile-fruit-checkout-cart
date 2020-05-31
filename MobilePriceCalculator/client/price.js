@@ -19,31 +19,116 @@ export default class Price extends Component {
       numOrange: 0,
       price: 0.0,
       Tax: false,
+      Type: "",
     };
   }
 
+  componentDidMount() {
+    fetch(url + "/reset").catch((error) => {
+      console.error(error);
+    });
+  }
+
   handleAddAppleButtonClick() {
-    this.addApple();
+    this.setState((prevState) => ({
+      numApple: prevState.numApple + 1,
+    }));
+    this.setState(
+      {
+        Type: "apple",
+      },
+      () => {
+        console.log(this.state.Type);
+        this.addItem();
+      }
+    );
   }
 
   handleRemoveAppleButtonClick() {
-    this.removeApple();
+    if (this.state.numApple > 0) {
+      this.setState(
+        {
+          Type: "apple",
+        },
+        () => {
+          console.log(this.state.Type);
+          this.removeItem();
+        }
+      );
+      this.setState((prevState) => ({
+        numApple: prevState.numApple - 1,
+      }));
+    } else {
+      Alert.alert("No Apple in Cart");
+    }
   }
 
   handleAddBananaButtonClick() {
-    this.addBanana();
+    this.setState((prevState) => ({
+      numBanana: prevState.numBanana + 1,
+    }));
+    this.setState(
+      {
+        Type: "banana",
+      },
+      () => {
+        console.log(this.state.Type);
+        this.addItem();
+      }
+    );
   }
 
   handleRemoveBananaButtonClick() {
-    this.removeBanana();
+    if (this.state.numBanana > 0) {
+      this.setState(
+        {
+          Type: "banana",
+        },
+        () => {
+          console.log(this.state.Type);
+          this.removeItem();
+        }
+      );
+      this.setState((prevState) => ({
+        numBanana: prevState.numBanana - 1,
+      }));
+    } else {
+      Alert.alert("No Banana in Cart");
+    }
   }
 
   handleAddOrangeButtonClick() {
-    this.addOrange();
+    this.setState((prevState) => ({
+      numOrange: prevState.numOrange + 1,
+    }));
+    this.setState(
+      {
+        Type: "orange",
+      },
+      () => {
+        console.log(this.state.Type);
+        this.addItem();
+      }
+    );
   }
 
   handleRemoveOrangeButtonClick() {
-    this.removeOrange();
+    if (this.state.numOrange > 0) {
+      this.setState(
+        {
+          Type: "orange",
+        },
+        () => {
+          console.log(this.state.Type);
+          this.removeItem();
+        }
+      );
+      this.setState((prevState) => ({
+        numOrange: prevState.numOrange - 1,
+      }));
+    } else {
+      Alert.alert("No Orange in Cart");
+    }
   }
 
   handleAddTaxButtonClick() {
@@ -54,128 +139,49 @@ export default class Price extends Component {
     this.removeTax();
   }
 
-  addApple = async () => {
+  async addItem() {
     try {
-      let response = await fetch(url + "/getApple");
+      let response = await fetch(url + "/addItem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: this.state.Type }),
+      });
       let json = await response.json();
-      var applePrice = Number(json.price);
-      if (this.state.Tax) {
-        applePrice = applePrice * 1.13;
-      }
-      this.setState((prevState) => ({
-        price: (Number(prevState.price) + applePrice).toFixed(2),
-        numApple: prevState.numApple + 1,
-      }));
+      this.setState({
+        price: Number(json.totalPrice),
+      });
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  removeApple = async () => {
+  async removeItem() {
     try {
-      let response = await fetch(url + "/getApple");
+      let response = await fetch(url + "/removeItem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: this.state.Type }),
+      });
       let json = await response.json();
-      var applePrice = Number(json.price);
-      if (this.state.Tax) {
-        applePrice = applePrice * 1.13;
-      }
-      if (this.state.numApple > 0) {
-        this.setState((prevState) => ({
-          price: (Number(prevState.price) - applePrice).toFixed(2),
-          numApple: prevState.numApple - 1,
-        }));
-      } else {
-        Alert.alert("No Apple in Cart");
-      }
+      this.setState({
+        price: Number(json.totalPrice),
+      });
     } catch (error) {
       console.error(error);
     }
-  };
-
-  addBanana = async () => {
-    try {
-      let response = await fetch(url + "/getBanana");
-      let json = await response.json();
-      var bananaPrice = Number(json.price);
-      if (this.state.Tax) {
-        bananaPrice = bananaPrice * 1.13;
-      }
-      this.setState((prevState) => ({
-        price: (Number(prevState.price) + bananaPrice).toFixed(2),
-        numBanana: prevState.numBanana + 1,
-      }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  removeBanana = async () => {
-    try {
-      let response = await fetch(url + "/getBanana");
-      let json = await response.json();
-      var bananaPrice = Number(json.price);
-      if (this.state.Tax) {
-        bananaPrice = bananaPrice * 1.13;
-      }
-      if (this.state.numBanana > 0) {
-        this.setState((prevState) => ({
-          price: (Number(prevState.price) - bananaPrice).toFixed(2),
-          numBanana: prevState.numBanana - 1,
-        }));
-      } else {
-        Alert.alert("No Banana in Cart");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  addOrange = async () => {
-    try {
-      let response = await fetch(url + "/getOrange");
-      let json = await response.json();
-      var orangePrice = Number(json.price);
-      if (this.state.Tax) {
-        orangePrice = orangePrice * 1.13;
-      }
-      this.setState((prevState) => ({
-        price: (Number(prevState.price) + orangePrice).toFixed(2),
-        numOrange: prevState.numOrange + 1,
-      }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  removeOrange = async () => {
-    try {
-      let response = await fetch(url + "/getOrange");
-      let json = await response.json();
-      var orangePrice = Number(json.price);
-      if (this.state.Tax) {
-        orangePrice = orangePrice * 1.13;
-      }
-      if (this.state.numOrange > 0) {
-        this.setState((prevState) => ({
-          price: (Number(prevState.price) - orangePrice).toFixed(2),
-          numOrange: prevState.numOrange - 1,
-        }));
-      } else {
-        Alert.alert("No Orange in Cart");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  }
 
   addTax = async () => {
     try {
-      if (this.state.Tax == false) {
-        this.setState((prevState) => ({
-          price: (Number(prevState.price) * 1.13).toFixed(2),
-          Tax: true,
-        }));
-      } else {
+      let taxResponse = await fetch(url + "/addTax");
+      let taxJson = await taxResponse.json();
+      var taxState = taxJson.mes;
+      let priceResponse = await fetch(url + "/getTotalPrice");
+      let priceJson = await priceResponse.json();
+      this.setState({
+        price: Number(priceJson.totalPrice),
+      });
+      if (taxState == "already taxed") {
         Alert.alert("Tax Already Included");
       }
     } catch (error) {
@@ -185,13 +191,16 @@ export default class Price extends Component {
 
   removeTax = async () => {
     try {
-      if (this.state.Tax) {
-        this.setState((prevState) => ({
-          price: (Number(prevState.price) / 1.13).toFixed(2),
-          Tax: false,
-        }));
-      } else {
-        Alert.alert("No Tax Included");
+      let taxResponse = await fetch(url + "/removeTax");
+      let taxJson = await taxResponse.json();
+      var taxState = taxJson.mes;
+      let priceResponse = await fetch(url + "/getTotalPrice");
+      let priceJson = await priceResponse.json();
+      this.setState({
+        price: Number(priceJson.totalPrice),
+      });
+      if (taxState == "already untaxed") {
+        Alert.alert("Tax Already Excluded");
       }
     } catch (error) {
       console.error(error);
