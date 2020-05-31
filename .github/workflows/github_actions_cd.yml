@@ -30,6 +30,8 @@ jobs:
         working-directory: ${{env.working-directory}}
       - run: npm ci
         working-directory: ${{env.client-directory}}
+      - run: npm build
+        working-directory: ${{env.client-directory}}
       - run: npm test
         working-directory: ${{env.working-directory}}
 #       - uses: expo/expo-github-action@v5
