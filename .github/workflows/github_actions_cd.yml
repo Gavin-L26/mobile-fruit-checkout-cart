@@ -40,7 +40,7 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - run: expo publish
-#         working-directory: ${{env.client-directory}}
+        working-directory: ${{env.client-directory}}
 #       - name: Login to Heroku Container registry
 #         env: 
 #           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
