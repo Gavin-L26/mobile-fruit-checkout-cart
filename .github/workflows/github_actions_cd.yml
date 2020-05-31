@@ -40,19 +40,19 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - run: expo publish
-        working-directory: ${{env.client-directory}}
-      - name: Login to Heroku Container registry
-        env: 
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:login 
-        working-directory: ${{env.working-directory}}
-      - name: Build and push
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
-        working-directory: ${{env.working-directory}}
-      - name: Release
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
-        working-directory: ${{env.working-directory}}
+#         working-directory: ${{env.client-directory}}
+#       - name: Login to Heroku Container registry
+#         env: 
+#           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+#         run: heroku container:login 
+#         working-directory: ${{env.working-directory}}
+#       - name: Build and push
+#         env:
+#           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+#         run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web 
+#         working-directory: ${{env.working-directory}}
+#       - name: Release
+#         env:
+#           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+#         run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
+#         working-directory: ${{env.working-directory}}
